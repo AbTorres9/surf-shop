@@ -9,6 +9,7 @@ const favicon = require('serve-favicon');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const posts = require('./routes/posts');
+const reviews = require('./routes/reviews');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/posts', posts);
+app.use('/posts/:id/reviews', reviews);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
