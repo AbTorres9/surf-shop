@@ -4,8 +4,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
+const passport = require('passport');
+const passportLocal = require('passport-local');
+const passportLocalMongoose = require('passport-local-mongoose');
+const session = require('express-session')
 
-
+const User = require('./models/user')
 const index = require('./routes/index');
 const posts = require('./routes/posts');
 const reviews = require('./routes/reviews');
@@ -22,6 +26,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//CONFIGURE PASSPORT AND SESSIONS (always use sessions b4 passport)
+app.use(session({
+  secret: 'hang ten dude!',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+//MOUNT ROUTES
 app.use('/', index);
 app.use('/posts', posts);
 app.use('/posts/:id/reviews', reviews);
