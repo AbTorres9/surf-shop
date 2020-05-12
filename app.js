@@ -7,7 +7,9 @@ const favicon = require('serve-favicon');
 const passport = require('passport');
 const passportLocal = require('passport-local');
 const passportLocalMongoose = require('passport-local-mongoose');
-const session = require('express-session')
+const session = require('express-session');
+const mongoose = require('mongoose');
+
 
 const User = require('./models/user')
 const index = require('./routes/index');
@@ -16,6 +18,13 @@ const reviews = require('./routes/reviews');
 
 const app = express();
 
+//DATABASE CONNECTION
+mongoose.connect('mongodb://localhost:27017/surf_shop', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', () => {
+  console.log("we are connected!");
+})
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
