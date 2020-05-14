@@ -9,6 +9,7 @@ const passportLocal = require('passport-local');
 const passportLocalMongoose = require('passport-local-mongoose');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 
 
 const User = require('./models/user')
@@ -34,6 +35,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 //CONFIGURE PASSPORT AND SESSIONS (always use sessions b4 passport)
 app.use(session({
